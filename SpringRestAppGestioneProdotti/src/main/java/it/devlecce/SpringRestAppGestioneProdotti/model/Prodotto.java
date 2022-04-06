@@ -7,27 +7,26 @@ import java.util.Date;
 
 @Entity
 public class Prodotto {
+
+    //ID, prezzo, data di acquisto, nome
     @Id
     @GeneratedValue
     private Long id;
-    private double prezzo;
-    private Date dataAcquisto;
+    private float prezzo;
+    private float qt;
+    private Date dataDiAcquisto;
+    private Date dataDiScadenza;
     private String nome;
 
     Prodotto(){
 
     }
-
-    public Prodotto(double prezzo, String nome) {
-        this.id = id;
+    //cj
+    public Prodotto(float prezzo, float qt, Date dataDiAcquisto, Date dataDiScadenza, String nome) {
         this.prezzo = prezzo;
-        this.nome = nome;
-    }
-
-    public Prodotto(Long id, double prezzo, Date dataAcquisto, String nome) {
-        this.id = id;
-        this.prezzo = prezzo;
-        this.dataAcquisto = dataAcquisto;
+        this.qt = qt;
+        this.dataDiAcquisto = dataDiAcquisto;
+        this.dataDiScadenza = dataDiScadenza;
         this.nome = nome;
     }
 
@@ -39,20 +38,36 @@ public class Prodotto {
         this.id = id;
     }
 
-    public double getPrezzo() {
+    public float getPrezzo() {
         return prezzo;
     }
 
-    public void setPrezzo(double prezzo) {
+    public void setPrezzo(float prezzo) {
         this.prezzo = prezzo;
     }
 
-    public Date getDataAcquisto() {
-        return dataAcquisto;
+    public float getQt() {
+        return qt;
     }
 
-    public void setDataAcquisto(Date dataAcquisto) {
-        this.dataAcquisto = dataAcquisto;
+    public void setQt(float qt) {
+        this.qt = qt;
+    }
+
+    public Date getDataDiAcquisto() {
+        return dataDiAcquisto;
+    }
+
+    public void setDataDiAcquisto(Date dataDiAcquisto) {
+        this.dataDiAcquisto = dataDiAcquisto;
+    }
+
+    public Date getDataDiScadenza() {
+        return dataDiScadenza;
+    }
+
+    public void setDataDiScadenza(Date dataDiScadenza) {
+        this.dataDiScadenza = dataDiScadenza;
     }
 
     public String getNome() {
@@ -62,6 +77,4 @@ public class Prodotto {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-
 }
