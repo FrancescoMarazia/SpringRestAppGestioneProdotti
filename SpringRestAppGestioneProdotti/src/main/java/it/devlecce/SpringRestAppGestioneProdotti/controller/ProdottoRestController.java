@@ -77,6 +77,24 @@ public class ProdottoRestController {
         return repository.findByDataDiScadenzaBetween(datada, dataa);
     }
 
+    @GetMapping("/prodotti/ricerca/dataScadenza/prima")
+    public List<Prodotto> ricercaPrimaDataScadenzaProdotto(
+            @RequestParam(name = "data") @DateTimeFormat(pattern = "dd-MM-yyyy")
+                    Date data
+
+    ) {
+        return repository.findByDataDiScadenzaBefore(data);
+    }
+
+    @GetMapping("/prodotti/ricerca/dataScadenza/dopo")
+    public List<Prodotto> ricercaDopoDataScadenzaProdotto(
+            @RequestParam(name = "data") @DateTimeFormat(pattern = "dd-MM-yyyy")
+                    Date data
+
+    ) {
+        return repository.findByDataDiScadenzaAfter(data);
+    }
+
     @GetMapping("/prodotti/ricerca/dataAcquisto")
     public List<Prodotto> ricercaPerDataAcquistoProdottoTraDate(
             @RequestParam(name = "dataDa") @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -85,6 +103,24 @@ public class ProdottoRestController {
                     Date dataa
     ) {
         return repository.findByDataDiAcquistoBetween(datada, dataa);
+    }
+
+    @GetMapping("/prodotti/ricerca/dataAcquisto/prima")
+    public List<Prodotto> ricercaPrimaDataAcquistoProdotto(
+            @RequestParam(name = "data") @DateTimeFormat(pattern = "dd-MM-yyyy")
+                    Date data
+
+    ) {
+        return repository.findByDataDiAcquistoBefore(data);
+    }
+
+    @GetMapping("/prodotti/ricerca/dataAcquisto/dopo")
+    public List<Prodotto> ricercaDopoDataAcquistoProdotto(
+            @RequestParam(name = "data") @DateTimeFormat(pattern = "dd-MM-yyyy")
+                    Date data
+
+    ) {
+        return repository.findByDataDiAcquistoAfter(data);
     }
 
     @PostMapping("/prodotto")
@@ -124,7 +160,7 @@ public class ProdottoRestController {
             logger.error("Si è verificato un errore", e);
         }
         repository.saveAll(prodotti);
-        return ResponseEntity.ok("CSV");
+        return ResponseEntity.ok("Contenuto del CSV aggiunto al database");
     }
 
     @PutMapping("/prodotti/{id}")

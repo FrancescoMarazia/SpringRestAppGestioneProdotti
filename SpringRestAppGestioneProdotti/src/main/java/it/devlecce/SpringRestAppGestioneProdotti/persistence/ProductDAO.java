@@ -13,6 +13,10 @@ public interface ProductDAO extends JpaRepository<Prodotto,Long> {
     List<Prodotto> findByPrezzoGreaterThan(float prezzo);
     List<Prodotto> findByPrezzoGreaterThanEqual(float prezzo);
     List<Prodotto> findByDataDiAcquistoBetween(Date dataAcquistoDa,Date dataAcquistoA);
+    List<Prodotto> findByDataDiAcquistoAfter(Date data);
+    List<Prodotto> findByDataDiAcquistoBefore(Date data);
     List<Prodotto> findByDataDiScadenzaBetween(Date dataScadenzaDa,Date dataScadenzaA);
+    List<Prodotto> findByDataDiScadenzaAfter(Date data);
+    List<Prodotto> findByDataDiScadenzaBefore(Date data);
 
 }
