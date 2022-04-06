@@ -21,7 +21,7 @@ public class PrimoInserimento {
     @Bean
     CommandLineRunner initDatabase(ProductDAO repository){
         return args -> {
-            List<Prodotto> prodotti = new ArrayList();
+            /*List<Prodotto> prodotti = new ArrayList();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-DD-yyyy");
             Date dataAcquisto = dateFormat.parse("01-01-2022");
             Date dataScadenza = dateFormat.parse("01-04-2022");
@@ -36,7 +36,7 @@ public class PrimoInserimento {
             prodotti.add(p1);
             prodotti.add(p2);
             prodotti.add(p3);
-            repository.saveAll(prodotti);
+            repository.saveAll(prodotti);*/
 
         };
     }

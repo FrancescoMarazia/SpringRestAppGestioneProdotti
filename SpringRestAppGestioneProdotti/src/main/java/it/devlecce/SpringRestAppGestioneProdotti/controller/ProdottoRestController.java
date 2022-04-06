@@ -11,9 +11,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,37 +37,38 @@ public class ProdottoRestController {
     }
 
     @GetMapping("/prodotto/{id}")
-    Optional<Prodotto> prodottoPerId(@PathVariable Long id){
+    Optional<Prodotto> prodottoPerId(@PathVariable Long id) {
         return repository.findById(id);
     }
+
     @GetMapping("/prodotto/{nome}")
-    List<Prodotto> prodottoPerNome(@PathVariable String nome){
+    List<Prodotto> prodottoPerNome(@PathVariable String nome) {
         return repository.findByNome(nome);
     }
 
     @GetMapping("/prodotto/{prezzo}")
-    List<Prodotto> prodottoPerPrezzo(@PathVariable float prezzo){
+    List<Prodotto> prodottoPerPrezzo(@PathVariable float prezzo) {
         return repository.findByPrezzo(prezzo);
     }
 
     @GetMapping("/prodotti/ricerca/dataScadenza")
     public List<Prodotto> ricercaPerDataScadenzaProdottoTraDate(
-            @RequestParam(name="dataDa") @DateTimeFormat(pattern = "dd-MM-yyyy")
+            @RequestParam(name = "dataDa") @DateTimeFormat(pattern = "dd-MM-yyyy")
                     Date datada,
-            @RequestParam(name="dataA") @DateTimeFormat(pattern = "dd-MM-yyyy")
+            @RequestParam(name = "dataA") @DateTimeFormat(pattern = "dd-MM-yyyy")
                     Date dataa
-    ){
-        return repository.findByDataDiScadenzaBetween(datada,dataa);
+    ) {
+        return repository.findByDataDiScadenzaBetween(datada, dataa);
     }
 
     @GetMapping("/prodotti/ricerca/dataAcquisto")
     public List<Prodotto> ricercaPerDataAcquistoProdottoTraDate(
-            @RequestParam(name="dataDa") @DateTimeFormat(pattern = "dd-MM-yyyy")
+            @RequestParam(name = "dataDa") @DateTimeFormat(pattern = "dd-MM-yyyy")
                     Date datada,
-            @RequestParam(name="dataA") @DateTimeFormat(pattern = "dd-MM-yyyy")
+            @RequestParam(name = "dataA") @DateTimeFormat(pattern = "dd-MM-yyyy")
                     Date dataa
-    ){
-        return repository.findByDataDiAcquistoBetween(datada,dataa);
+    ) {
+        return repository.findByDataDiAcquistoBetween(datada, dataa);
     }
 
     @PostMapping("/prodotto")
@@ -71,30 +76,40 @@ public class ProdottoRestController {
         return repository.save(nuovoProdotto);
     }
 
-    private static final @PostMapping("/caricaCSV")
+    private final @PostMapping("/caricaCSV")
     ResponseEntity<String> caricaCSV(@RequestParam("file") MultipartFile file) {
-        Logger logger = LoggerFactory.getLogger(ProdottoRestController.class);
         Reader in = null;
+        Logger logger = LoggerFactory.getLogger(ProdottoRestController.class);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        List<Prodotto> prodotti = new ArrayList();
 
         try {
             in = new InputStreamReader(file.getInputStream());
 // Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder().build().parse(in);
             for (CSVRecord record : records) {
-                Long id = Long.parseLong(record.get(0));
-                float prezzo = Float.parseFloat(record.get(1));
+                //Long id = Long.parseLong(record.get(0));
+                float prezzo = Float.parseFloat(record.get(0));
                 //logger.info("Autore: " + autore);
-                float qt = Float.parseFloat(record.get(2));
+                float qt = Float.parseFloat(record.get(1));
                 //logger.warn("Titolo: " + titolo);
-                String dataAcquisto = record.get(3);
+
+                String dAcquisto = record.get(2);
+                Date dataAcquisto = dateFormat.parse(dAcquisto);
                 // logger.warn("Titolo: " + titolo);
-                String dataScadenza = record.get(4);
+                String dScadenza = record.get(3);
+                Date dataScadenza = dateFormat.parse(dAcquisto);
                 //logger.warn("Titolo: " + titolo);
-                String nome = record.get(5);
+                String nome = record.get(4);
+                Prodotto p = new Prodotto(prezzo, qt, dataAcquisto, dataScadenza, nome);
+                prodotti.add(p);
             }
-        } catch (IOException e) {
+
+
+        } catch (IOException | ParseException e) {
             logger.error("Si è verificato un errore", e);
         }
+        repository.saveAll(prodotti);
         return ResponseEntity.ok("CSV");
     }
 }
