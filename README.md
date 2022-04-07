@@ -1,8 +1,15 @@
 # SpringRestAppGestioneProdotti
 Un' applicazione Spring Rest con database H2
 
-##Guida
+## Procedimento
 
+- Creazione di una nuova repository su GitHub
+- Creazione di un nuovo progetto Spring con le dependency necessarie
+- Creazione di una classe Prodotto
+- Creazione delle classi e interfacce per eseguire il CRUD
+- Test delle query con Postman
+
+##Guida
 
 ### Elenco delle Query
 
