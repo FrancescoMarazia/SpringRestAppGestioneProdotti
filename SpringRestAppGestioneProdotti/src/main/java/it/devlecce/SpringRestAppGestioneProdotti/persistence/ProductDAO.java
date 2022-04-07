@@ -8,6 +8,11 @@ import java.util.List;
 
 public interface ProductDAO extends JpaRepository<Prodotto,Long> {
     List<Prodotto> findByNome(String nome);
+    List<Prodotto> findByQtBetween(float qt1, float qt2);
+    List<Prodotto> findByQtLessThan(float qt);
+    List<Prodotto> findByQtGreaterThan(float qt);
+    List<Prodotto> findByQtLessThanEqual(float qt);
+    List<Prodotto> findByQtGreaterThanEqual(float qt);
     List<Prodotto> findByPrezzoLessThan(float prezzo);
     List<Prodotto> findByPrezzoLessThanEqual(float prezzo);
     List<Prodotto> findByPrezzoGreaterThan(float prezzo);

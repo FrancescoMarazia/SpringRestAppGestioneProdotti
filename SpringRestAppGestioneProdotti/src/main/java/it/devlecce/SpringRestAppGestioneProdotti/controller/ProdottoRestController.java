@@ -47,6 +47,29 @@ public class ProdottoRestController {
         return repository.findByNome(nome);
     }
 
+    @GetMapping("/prodotti/ricerca/qt")
+    List<Prodotto> prodottoPerQt(@RequestParam("qtMinima") float qt1 , @RequestParam("qtMassima") float qt2) {
+        return repository.findByQtBetween(qt1,qt2);
+    }
+
+    @GetMapping("/prodotti/ricerca/qt/massimo")
+    List<Prodotto> prodottoPerQtMassima(@RequestParam("qt") float qt) {
+        return repository.findByQtLessThan(qt);
+    }
+    @GetMapping("/prodotti/ricerca/qt/massimoIncluso")
+    List<Prodotto> prodottoPerQtMassimaInclusa(@RequestParam("qt") float qt) {
+        return repository.findByQtLessThanEqual(qt);
+    }
+
+    @GetMapping("/prodotti/ricerca/qt/minimo")
+    List<Prodotto> prodottoPerQtMinima(@RequestParam("qt") float qt) {
+        return repository.findByQtGreaterThan(qt);
+    }
+    @GetMapping("/prodotti/ricerca/qt/minimoIncluso")
+    List<Prodotto> prodottoPerQtMinimaInclusa(@RequestParam("qt") float qt) {
+        return repository.findByQtGreaterThanEqual(qt);
+    }
+
     @GetMapping("/prodotti/ricerca/prezzo/massimo")
     List<Prodotto> prodottoPerPrezzoMassimo(@RequestParam("prezzoMassimo")  float prezzo) {
         return repository.findByPrezzoLessThan(prezzo);
@@ -134,7 +157,6 @@ public class ProdottoRestController {
         Logger logger = LoggerFactory.getLogger(ProdottoRestController.class);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         List<Prodotto> prodotti = new ArrayList();
-
         try {
             in = new InputStreamReader(file.getInputStream());
 // Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
@@ -154,12 +176,12 @@ public class ProdottoRestController {
                 Prodotto p = new Prodotto(prezzo, qt, dataAcquisto, dataScadenza, nome);
                 prodotti.add(p);
             }
-
-
         } catch (IOException | ParseException e) {
             logger.error("Si è verificato un errore", e);
         }
+
         repository.saveAll(prodotti);
+        logger.info("Contenuto del file aggiunto al database");
         return ResponseEntity.ok("Contenuto del CSV aggiunto al database");
     }
 

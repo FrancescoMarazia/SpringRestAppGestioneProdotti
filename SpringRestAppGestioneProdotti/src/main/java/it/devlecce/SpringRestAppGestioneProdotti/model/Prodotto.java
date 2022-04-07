@@ -21,7 +21,7 @@ public class Prodotto {
     Prodotto(){
 
     }
-    //cj
+
     public Prodotto(float prezzo, float qt, Date dataDiAcquisto, Date dataDiScadenza, String nome) {
         this.prezzo = prezzo;
         this.qt = qt;
